@@ -12,23 +12,22 @@ class Main {
 
     static void main(String[] args) {
         Inventory inventory = new Inventory();
-        // Check if access modifier is needed
 
-        Car car1 = new Car("Volkswagen", "Golf", 2025, "Turbo", 405000.00);
+        Car car1 = new Car("Volkswagen", "Golf", 2025, "Turbo", 440000.00);
         inventory.addCarInventory(car1);
-        Car car2 = new Car("Porsche", "911 GT3 RS", 2024, "NA", 1100000.00);
+        Car car2 = new Car("Porsche", "911 GT3 RS", 2024, "NA", 2100000.00);
         inventory.addCarInventory(car2);
-        Car car3 = new Car("BMW", "M3 Competition", 2025, "Twin-turbo", 925000.00);
+        Car car3 = new Car("BMW", "M3 Competition", 2025, "Twin-turbo", 1125000.00);
         inventory.addCarInventory(car3);
-        Car car4 = new Car("Honda", "Civic Type R", 2023, "Turbo", 525000.00);
+        Car car4 = new Car("Honda", "Civic Type R", 2023, "Turbo", 450000.00);
         inventory.addCarInventory(car4);
-
-        Main myObj = new Main();
 
         int mainMenuIndex = -1;
 
+        double aliquotaImposto = 0.18;
+
         do {
-            System.out.println(".: Sport Car Dealer Ltd :.\n[  Avenida Paulista, 9240  ]\n");
+            System.out.println("[  Dealer Management System  ]\n");
             System.out.println("1. Manage inventory (Inventory & sales)\n2. Finance (Customers & sales)\n0. Quit\n");
 
             try {
@@ -102,6 +101,7 @@ class Main {
                                             System.out.println("Selected car: " + salesCarSelected);
                                             double price = Inventory.inventory.get(salesCarSelectorIndex - 1).price;
                                             System.out.println("Price (before taxes): R$ " + price);
+                                            System.out.println("Price (after taxes: R$ " + (price + (price*aliquotaImposto)));
                                             System.out.println();
 
                                             System.out.print("Type in the customer's full name: ");
@@ -115,7 +115,7 @@ class Main {
 
                                             System.out.println();
 
-                                            System.out.print("Finally, type in the customer's CPF (no dots or dashes): ");
+                                            System.out.print("Type in the customer's CPF (no dots or dashes): ");
 
                                             try {
                                                 salesBuyersCpf = scanner.nextLine();
@@ -127,7 +127,7 @@ class Main {
                                             System.out.println();
 
                                             System.out.println(salesCarSelected);
-                                            System.out.println("Price (after taxes): R$ " + (price + (price * 0.0645)));
+                                            System.out.println("Total: R$ " + (price + (price * aliquotaImposto)));
                                             System.out.print("Confirm sale? (yes/no): ");
 
                                             try {
@@ -148,7 +148,7 @@ class Main {
                                                     Inventory.inventory.remove(salesCarSelectorIndex - 1);
                                                     store.newSale(sale);
                                                     System.out.println("Customer: " + customer.name + "\nCar: " + salesCarSelected);
-                                                    System.out.println("Total: R$ " + (price + (price * 0.0645)));
+                                                    System.out.println("Total: R$ " + (price + (price * aliquotaImposto)));
                                                     System.out.println(date + "\n");
                                                     break;
                                                 case "no":
@@ -226,12 +226,12 @@ class Main {
 
                                     for(Sale sales : store.sales) {
                                         System.out.println("Customer: " + sales.buyersName + ", CPF: " + sales.buyersCpf);
-                                        System.out.println("Car: " + sales.car.make + " " + sales.car.model + " " + sales.car.year + " " + " Price: " + sales.car.price);
+                                        System.out.println("Car: " + sales.car.make + " " + sales.car.model + " " + sales.car.year + " " + "Price: " + sales.car.price);
                                         System.out.println();
-                                        totalSales = totalSales + sales.car.price;
+                                        totalSales = totalSales + (sales.car.price + (sales.car.price*aliquotaImposto));
                                     }
 
-                                    System.out.println("Total in sales (before taxes): R$ " + totalSales + "\n");
+                                    System.out.println("Total in sales: R$ " + totalSales + "\n");
 
                                     break;
                                 }
@@ -269,10 +269,9 @@ class Main {
                     break;
 
                 case 0:
-                    mainMenuIndex = 0;
+                    mainMenuIndex = 0;//
                     break;
             }
         } while (mainMenuIndex != 0);
-        // Could make showInventory static
     }
 }

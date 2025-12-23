@@ -14,4 +14,8 @@ public class Customer {
     public void getCpf() {
         System.out.println(cpf);
     }
+
+    public void getName() {
+        System.out.println(name);
+    }
 }

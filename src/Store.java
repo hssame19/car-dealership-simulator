@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 public class Store {
 
-    public ArrayList<Customer> customers = new ArrayList<>();
+    ArrayList<Customer> customers = new ArrayList<>();
 
-    public ArrayList<Sale> sales = new ArrayList<>();
+    ArrayList<Sale> sales = new ArrayList<>();
 
     public void addCustomer(Customer customer) {
         customers.add(customer);
@@ -15,8 +15,4 @@ public class Store {
         sales.add(sale);
         System.out.println("Sale added.\n");
     }
-
-
-
-
 }
