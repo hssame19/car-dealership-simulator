@@ -6,7 +6,7 @@ class Main {
         static Scanner scanner = new Scanner(System.in);
         static Inventory inventory = new Inventory();
 
-        static void main(String[] args) {
+        public static void main(String[] args) {
 
             Car car1 = new Car("Volkswagen", "Golf", 2025, "Turbo", 440000.00);
             inventory.addCarInventory(car1);
@@ -55,7 +55,7 @@ class Main {
 
                             switch (inventoryManagerIndex) {
                                 case 1:
-                                    inventory.showInventory(Inventory.inventory);
+                                    inventory.showInventory(Inventory.getInventory());
                                     break;
                                 case 2:
                                     do {
@@ -78,7 +78,7 @@ class Main {
                                         switch (salesManagerIndex) {
                                             case 1:
                                                 System.out.println("Select the car by its index:\n");
-                                                inventory.showInventory(Inventory.inventory);
+                                                inventory.showInventory(Inventory.getInventory());
 
                                                 try {
                                                     salesCarSelectorIndex = scanner.nextInt();
@@ -89,9 +89,9 @@ class Main {
 
                                                 scanner.nextLine();
                                                 System.out.println();
-                                                String salesCarSelected = Inventory.inventory.get(salesCarSelectorIndex - 1).make + " " +  Inventory.inventory.get(salesCarSelectorIndex - 1).model + " " + Inventory.inventory.get(salesCarSelectorIndex - 1).year;
+                                                String salesCarSelected = Inventory.getInventory().get(salesCarSelectorIndex - 1).getMake() + " " +  Inventory.getInventory().get(salesCarSelectorIndex - 1).getModel() + " " + Inventory.getInventory().get(salesCarSelectorIndex - 1).getYear();
                                                 System.out.println("Selected car: " + salesCarSelected);
-                                                double price = Inventory.inventory.get(salesCarSelectorIndex - 1).price;
+                                                double price = Inventory.getInventory().get(salesCarSelectorIndex - 1).getPrice();
                                                 System.out.println("Price (before taxes): R$ " + price);
                                                 System.out.println("Price (after taxes: R$ " + (price + (price*aliquotaImposto)));
                                                 System.out.println();
@@ -133,19 +133,19 @@ class Main {
                                                 switch (salesConfirmSale) {
                                                     case "yes":
 
-                                                        if(store.customers.isEmpty()) {
+                                                        if(store.getCustomers().isEmpty()) {
 
                                                             // System.out.println("\nCUSTOMER LIST IS EMPTY.\n");
 
                                                             Customer firstCustomer = new Customer(salesBuyersName, salesBuyersCpf);
                                                             store.addCustomer(firstCustomer);
-                                                            firstCustomer.cars.add(Inventory.inventory.get(salesCarSelectorIndex - 1));
+                                                            firstCustomer.getCars().add(Inventory.getInventory().get(salesCarSelectorIndex - 1));
                                                             System.out.println("[  Sale confirmed  ]");
                                                             Date saleDate = new Date();
-                                                            Sale sale = new Sale(salesBuyersName, salesBuyersCpf, Inventory.inventory.get(salesCarSelectorIndex - 1), saleDate);
-                                                            inventory.removeCarInventory(Inventory.inventory.get(salesCarSelectorIndex - 1));
+                                                            Sale sale = new Sale(salesBuyersName, salesBuyersCpf, Inventory.getInventory().get(salesCarSelectorIndex - 1), saleDate);
+                                                            inventory.removeCarInventory(Inventory.getInventory().get(salesCarSelectorIndex - 1));
                                                             store.newSale(sale);
-                                                            System.out.println("Customer: " + firstCustomer.name + "\nCar: " + salesCarSelected);
+                                                            System.out.println("Customer: " + firstCustomer.getName() + "\nCar: " + salesCarSelected);
                                                             System.out.println("Total: R$ " + (price + (price * aliquotaImposto)));
                                                             System.out.println(saleDate + "\n");
                                                             break;
@@ -154,8 +154,8 @@ class Main {
                                                             Customer existingCustomer = null;
                                                             // System.out.println("\nCUSTOMER LIST IS NOT EMPTY. VERIFYING IF BUYER IS ON CUSTOMER LIST.\n");
 
-                                                            for (Customer customer : store.customers) {
-                                                                if (salesBuyersCpf.equals(customer.cpf)) {
+                                                            for (Customer customer : store.getCustomers()) {
+                                                                if (salesBuyersCpf.equals((customer.getCpf()))) {
                                                                     existingCustomer = customer;
                                                                     clientExists = true;
                                                                     break;
@@ -167,12 +167,12 @@ class Main {
 
                                                                 System.out.println("Customer already in database\n");
                                                                 Date saleDate = new Date();
-                                                                Sale sale = new Sale(salesBuyersName, salesBuyersCpf, Inventory.inventory.get(salesCarSelectorIndex - 1), saleDate);
+                                                                Sale sale = new Sale(salesBuyersName, salesBuyersCpf, Inventory.getInventory().get(salesCarSelectorIndex - 1), saleDate);
                                                                 store.newSale(sale);
-                                                                existingCustomer.cars.add(Inventory.inventory.get(salesCarSelectorIndex - 1));
-                                                                inventory.removeCarInventory(Inventory.inventory.get(salesCarSelectorIndex - 1));
+                                                                existingCustomer.getCars().add(Inventory.getInventory().get(salesCarSelectorIndex - 1));
+                                                                inventory.removeCarInventory(Inventory.getInventory().get(salesCarSelectorIndex - 1));
                                                                 System.out.println("[  Sale confirmed  ]");
-                                                                System.out.println("Customer: " + existingCustomer.name + "\nCar: " + salesCarSelected);
+                                                                System.out.println("Customer: " + existingCustomer.getName() + "\nCar: " + salesCarSelected);
                                                                 System.out.println("Total: R$ " + (price + (price * aliquotaImposto)));
                                                                 System.out.println(saleDate + "\n");
                                                                 break;
@@ -181,13 +181,13 @@ class Main {
 
                                                                 Customer newCustomer = new Customer(salesBuyersName, salesBuyersCpf);
                                                                 store.addCustomer(newCustomer);
-                                                                newCustomer.cars.add(Inventory.inventory.get(salesCarSelectorIndex - 1));
+                                                                newCustomer.getCars().add(Inventory.getInventory().get(salesCarSelectorIndex - 1));
                                                                 System.out.println("[  Sale confirmed  ]");
                                                                 Date saleDate = new Date();
-                                                                Sale sale = new Sale(salesBuyersName, salesBuyersCpf, Inventory.inventory.get(salesCarSelectorIndex - 1), saleDate);
-                                                                inventory.removeCarInventory(Inventory.inventory.get(salesCarSelectorIndex - 1));
+                                                                Sale sale = new Sale(salesBuyersName, salesBuyersCpf, Inventory.getInventory().get(salesCarSelectorIndex - 1), saleDate);
+                                                                inventory.removeCarInventory(Inventory.getInventory().get(salesCarSelectorIndex - 1));
                                                                 store.newSale(sale);
-                                                                System.out.println("Customer: " + newCustomer.name + "\nCar: " + salesCarSelected);
+                                                                System.out.println("Customer: " + newCustomer.getName() + "\nCar: " + salesCarSelected);
                                                                 System.out.println("Total: R$ " + (price + (price * aliquotaImposto)));
                                                                 System.out.println(saleDate + "\n");
                                                                 break;
@@ -230,7 +230,7 @@ class Main {
                                 Car car = new Car(make, model, year, engineAspiration, price);
 
                                 inventory.addCarInventory(car);
-                                inventory.showInventory(Inventory.inventory);
+                                inventory.showInventory(Inventory.getInventory());
 
                                 break;
                             case 0:
@@ -255,7 +255,7 @@ class Main {
 
                             switch(financeMenuIndex) {
                                 case 1:
-                                    if(store.sales.isEmpty()) {
+                                    if(store.getSales().isEmpty()) {
                                         System.out.println("\nNo sales recorded.\n");
                                         break;
                                     } else {
@@ -263,12 +263,12 @@ class Main {
 
                                         double totalSales = 0;
 
-                                        for(Sale sales : store.sales) {
-                                            System.out.println("Customer: " + sales.buyersName + ", CPF: " + sales.buyersCpf);
-                                            System.out.println("Car: " + sales.car.make + " " + sales.car.model + " " + sales.car.year + " " + "Price: " + sales.car.price);
-                                            System.out.println("Date: " + sales.date);
+                                        for(Sale sales : store.getSales()) {
+                                            System.out.println("Customer: " + sales.getBuyersName() + ", CPF: " + sales.getBuyersCpf());
+                                            System.out.println("Car: " + sales.getSaleCar().getMake() + " " + sales.getSaleCar().getModel() + " " + sales.getSaleCar().getYear() + " " + "Price: " + sales.getSaleCar().getPrice());
+                                            System.out.println("Date: " + sales.getDate());
                                             System.out.println();
-                                            totalSales = totalSales + (sales.car.price + (sales.car.price*aliquotaImposto));
+                                            totalSales = totalSales + (sales.getSaleCar().getPrice() + (sales.getSaleCar().getPrice()*aliquotaImposto));
                                         }
 
                                         System.out.println("Total in sales: R$ " + totalSales + "\n");
@@ -284,30 +284,30 @@ class Main {
                                     String customersCpf = "";
                                     int secondNameStarts = -1;
 
-                                    for(Customer customer : store.customers) {
-                                        for(int i = 0; i < customer.name.length(); i++) {
-                                            if(customer.name.substring(i, i + 1).equals(" ")) {
+                                    for(Customer customer : store.getCustomers()) {
+                                        for(int i = 0; i < customer.getName().length(); i++) {
+                                            if(customer.getName().substring(i, i + 1).equals(" ")) {
                                                 secondNameStarts = i;
                                                 break;
                                             } else {
-                                                customersFirstName = customersFirstName + customer.name.charAt(i);
+                                                customersFirstName = customersFirstName + customer.getName().charAt(i);
                                             }
                                         }
-                                        customersSecondName = customer.name.substring(secondNameStarts + 1, customer.name.length());
+                                        customersSecondName = customer.getName().substring(secondNameStarts + 1, customer.getName().length());
 
                                         // 000.000.000-00
-                                        for(int i = 0; i < customer.cpf.length(); i++) {
+                                        for(int i = 0; i < customer.getCpf().length(); i++) {
                                             if(i == 3 || i == 6) {
                                                 customersCpf = customersCpf + ".";
                                             }
                                             if(i == 9) {
                                                 customersCpf = customersCpf + "-";
                                             }
-                                            customersCpf = customersCpf + customer.cpf.charAt(i);
+                                            customersCpf = customersCpf + customer.getCpf().charAt(i);
                                         }
 
                                         System.out.println("First name: " + customersFirstName + "\nSecond name: " + customersSecondName + "\nCPF: " + customersCpf);
-                                        System.out.println("Cars bought: " + customer.cars.size());
+                                        System.out.println("Cars bought: " + customer.getCars().size());
                                         customersFirstName = "";
                                         customersSecondName = "";
                                         customersCpf = "";
